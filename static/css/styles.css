@@ -1,4 +1,13 @@
-.svg-img{
+/* For index.html */
+body {
+    background-image: url("../assets/images/todo1.png");
+    background-size: cover; /* Optional: Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Optional: Prevents image from repeating */
+}
+
+
+/* For base.html */
+.svg-img {
     background-color: purple;
     width: 2rem;
     height: 1.8rem;
