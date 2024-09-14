@@ -3,8 +3,39 @@
 {% block title %}Home - Taskly{% endblock %}
 
 {% block content %}
-    <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 left-side">
+                <div class="mb-3">
+                    <form method="POST" action="{{ url_for('index') }}">
+                        <div class="mb-3">
+                            <label for="dateInput" class="form-label">Date:</label>
+                            <input type="date" class="form-control" id="dateInput" name="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="timeInput" class="form-label">Time:</label>
+                            <input type="time" class="form-control" id="timeInput" name="time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="todoInput" class="form-label">ToDo:</label>
+                            <textarea class="form-control" id="todoInput" name="title" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
 
 
-    </body>
+                </div>
+            </div>
+
+            <div class="col-md-6 right-side">
+                <h2 class="text-white">ToDo Results</h2>
+                <ul>
+                    {% for todo in todos %}
+                        <li>{{ todo.time }} - {{ todo.todo }}</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

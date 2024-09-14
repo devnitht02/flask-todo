@@ -1,14 +1,44 @@
 /* For index.html */
 body {
     background-image: url("../assets/images/todo1.png");
-    background-size: cover; /* Optional: Ensures the image covers the entire background */
-    background-repeat: no-repeat; /* Optional: Prevents image from repeating */
+    background-size: cover; /* Ensures the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents image from repeating */
 }
 
+.form-label {
+    color: white;
+}
 
-/* For base.html */
-.svg-img {
-    background-color: purple;
-    width: 2rem;
-    height: 1.8rem;
+.container {
+    background-color: transparent;
+}
+
+/* Additional styling for layout */
+.left-side, .right-side {
+    padding: 20px;
+}
+
+.left-side {
+    border-right: 1px solid #ddd; /* Optional: for dividing line */
+}
+
+/* Ensures that content is properly aligned and spaced */
+@media (min-width: 768px) {
+    .container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-side, .right-side {
+        flex: 1;
+        margin: 10px;
+    }
+
+    .left-side {
+        max-width: 50%;
+    }
+
+    .right-side {
+        max-width: 50%;
+    }
 }
