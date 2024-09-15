@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Boolean, Column
 from sqlalchemy.orm import Mapped, mapped_column
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, relationship
@@ -16,6 +16,7 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'jvrvuirbboirneb'
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taskly.db"
 db.init_app(app)
 
@@ -37,6 +38,7 @@ class Task(db.Model):
     time: Mapped[str] = mapped_column(String(80), nullable=False)
     date: Mapped[str] = mapped_column(String(80), nullable=False)
     done: Mapped[bool] = mapped_column(Boolean, default=False)
+
     # user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
     # user: Mapped['User'] = relationship('User', back_populates='tasks')
 
@@ -58,14 +60,12 @@ def index():
         new_task = Task(title=title, date=date, time=time)
         db.session.add(new_task)
         db.session.commit()
+        flash("Task added successfully")
         return redirect(url_for('index'))
 
-    return render_template('index.html')
+    all_tasks = Task.query.all()
 
-
-@app.route('/submit_todo')
-def submit_todo():
-    return render_template('index.html')
+    return render_template('index.html', all_tasks=all_tasks)
 
 
 @app.route('/register', methods=['GET', 'POST'])
