@@ -68,6 +68,15 @@ def index():
     return render_template('index.html', all_tasks=all_tasks)
 
 
+@app.route('/delete/<int:task_id>', methods=['GET', 'POST'])
+def delete(task_id):
+    task = Task.query.get(task_id)
+    db.session.delete(task)
+    db.session.commit()
+    flash("Task deleted successfully")
+    return render_template("index.html", task=task)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     return render_template('register.html')

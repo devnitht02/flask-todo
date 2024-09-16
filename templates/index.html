@@ -28,9 +28,6 @@
                         <textarea class="form-control" id="todoInput" name="title" rows="3" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Task</button>
-                    <br>
-                    <br>
-                    <br>
                 </form>
             </div>
 
@@ -39,9 +36,12 @@
             <div class="col-md-6">
                 <h2 class="text-white mb-4">Your To-Do List</h2>
                 <ul class="list-group">
-                    {% for tasks in all_tasks %}
+                    {% for task in all_tasks %}
                         <li class="list-group-item">
-                            <strong>{{ tasks.date }}</strong> at <b>{{ tasks.time }}</b> - <b>{{ tasks.title }}</b>
+                            <strong>{{ task.date }}</strong> at <b>{{ task.time }}</b> - <b>{{ task.title }}</b>
+                            <form method="POST" action="{{ url_for('delete', task_id=task.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
                         </li>
                     {% endfor %}
                 </ul>
