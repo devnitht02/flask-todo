@@ -110,3 +110,7 @@ button.btn-primary:hover {
     background-color: #c82333;
     border-color: #bd2130;
 }
+
+.btn-sm{
+    margin: 5px;
+}

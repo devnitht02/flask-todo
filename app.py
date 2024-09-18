@@ -68,6 +68,25 @@ def index():
     return render_template('index.html', all_tasks=all_tasks)
 
 
+@app.route('/update/<int:task_id>', methods=['GET', 'POST'])
+def update(task_id):
+    task = Task.query.get(task_id)
+    if not task:
+        flash("Task not found")
+        return redirect(url_for('index'))
+
+    if request.method == 'POST':
+        task.title = request.form.get('title')
+        task.date = request.form.get('date')
+        task.time = request.form.get('time')
+
+        db.session.commit()
+        flash("Task updated successfully")
+        return redirect(url_for('index'))
+
+    return render_template('update.html', task=task)
+
+
 @app.route('/delete/<int:task_id>', methods=['GET', 'POST'])
 def delete(task_id):
     task = Task.query.get(task_id)

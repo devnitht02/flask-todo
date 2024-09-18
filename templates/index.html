@@ -38,12 +38,18 @@
                 <ul class="list-group">
                     {% for task in all_tasks %}
                         <li class="list-group-item">
-                            <strong>{{ task.date }}</strong>  <b>{{ task.time }}</b>  <b>{{ task.title }}</b>
-                            <form method="POST" action="{{ url_for('delete', task_id=task.id) }}" style="display:inline;">
+                            <strong>{{ task.date }}</strong> <b>{{ task.time }}</b> <b>{{ task.title }}</b>
+
+
+                            <form method="POST" action="{{ url_for('delete', task_id=task.id) }}"
+                                  style="display:inline;">
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
+
+                            <a href="{{ url_for('update', task_id=task.id) }}" class="btn btn-warning btn-sm">Update</a>
                         </li>
                     {% endfor %}
+
                 </ul>
             </div>
         </div>
