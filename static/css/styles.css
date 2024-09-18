@@ -83,7 +83,7 @@ button.btn-primary:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.1); 
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
     padding: 10px;
     margin-bottom: 10px;
