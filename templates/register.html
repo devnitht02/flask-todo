@@ -4,13 +4,41 @@
 
 {% block content %}
     <body>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <p class="flash">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h2 class="mb-4">Update Task</h2>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('register' }}">
+                    <div class="mb-3" style="width: 35rem">
+                        <label for="dateInput" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               required>
+                    </div>
+                    <div class="mb-3" style="width: 35rem">
+                        <label for="timeInput" class="form-label">Time:</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               required>
+                    </div>
+                    <div class="mb-3" style="width: 35rem">
+                        <label for="todoInput" class="form-label">ToDo:</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                               required>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     </body>

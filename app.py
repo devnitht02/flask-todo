@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, relationship
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+from werkzeug.security import generate_password_hash
 
 
 class Base(DeclarativeBase):
@@ -21,15 +22,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///taskly.db"
 db.init_app(app)
 
 
-# class User(db.Model, UserMixin):
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     username: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
-#     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-#     password: Mapped[str] = mapped_column(String(80), nullable=False)
-#     tasks: Mapped[list['Task']] = relationship('Task', back_populates='user')
-#
-#     def __repr__(self):
-#         return f'<User {self.username}>'
+class User(db.Model, UserMixin):
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    username: Mapped[str] = mapped_column(String(80), unique=True, nullable=False)
+    email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
+    password: Mapped[str] = mapped_column(String(80), nullable=False)
+    tasks: Mapped[list['Task']] = relationship('Task', back_populates='user')
+
+    def __repr__(self):
+        return f'<User {self.username}>'
 
 
 class Task(db.Model):
@@ -38,9 +39,8 @@ class Task(db.Model):
     time: Mapped[str] = mapped_column(String(80), nullable=False)
     date: Mapped[str] = mapped_column(String(80), nullable=False)
     done: Mapped[bool] = mapped_column(Boolean, default=False)
-
-    # user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
-    # user: Mapped['User'] = relationship('User', back_populates='tasks')
+    user_id: Mapped[int] = mapped_column(ForeignKey('user.id'))
+    user: Mapped['User'] = relationship('User', back_populates='tasks')
 
     def __repr__(self):
         return f'<Task {self.title}>'
@@ -101,6 +101,29 @@ def delete(task_id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == "POST":
+        username = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        hashed_password = generate_password_hash(password, method='scrypt', salt_length=8)
+
+        result = db.session.execute(db.select(User).where(User.email == email))
+        user_email = result.scalar()
+
+        if user_email:
+            flash("This email is already registered")
+            return redirect(url_for('login'))
+        else:
+            new_user = User(
+                username=username,
+                email=email,
+                password=hashed_password
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
+
     return render_template('register.html')
 
 

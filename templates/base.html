@@ -17,7 +17,6 @@
             Taskly
         </a>
 
-        <!-- Navbar Toggler -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,15 +40,14 @@
         </div>
         <a href="{{ url_for('login') }}" class="btn btn-outline-light" type="submit" fdprocessedid="c70acs">Log-In</a>
     </div>
-    <a href="{{ url_for('register') }}" class="btn btn-outline-light" type="submit" fdprocessedid="c70acs">Register</a>
+    <a href="register.html" class="btn btn-outline-light" type="submit" fdprocessedid="c70acs">Register</a>
 
 </nav>
 
 
-<!-- Content Block -->
 <div class="container">
     {% block content %}
-        <!-- Page content goes here -->
+
     {% endblock %}
 </div>
 
