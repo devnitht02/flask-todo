@@ -70,9 +70,10 @@ def index():
         flash("Task added successfully")
         return redirect(url_for('index'))
 
-    all_tasks = Task.query.filter_by(user_id=current_user.id).all()
+    incomplete_tasks = Task.query.filter_by(user_id=current_user.id, done=False).all()
+    completed_tasks = Task.query.filter_by(user_id=current_user.id, done=True).all()
 
-    return render_template('index.html', all_tasks=all_tasks)
+    return render_template('index.html', incomplete_tasks=incomplete_tasks, completed_tasks=completed_tasks)
 
 
 @app.route('/update/<int:task_id>', methods=['GET', 'POST'])
@@ -87,6 +88,7 @@ def update(task_id):
         task.title = request.form.get('title')
         task.date = request.form.get('date')
         task.time = request.form.get('time')
+        task.done = 'done' in request.form  # Checkbox logic
 
         db.session.commit()
         flash("Task updated successfully")
@@ -95,7 +97,7 @@ def update(task_id):
     return render_template('update.html', task=task)
 
 
-@app.route('/delete/<int:task_id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:task_id>', methods=['POST'])
 @login_required
 def delete(task_id):
     task = Task.query.get(task_id)
@@ -106,6 +108,17 @@ def delete(task_id):
         return redirect(url_for('index'))
 
     flash("Task not found")
+    return redirect(url_for('index'))
+
+
+@app.route('/mark_done/<int:task_id>', methods=['POST'])
+@login_required
+def mark_done(task_id):
+    task = Task.query.get(task_id)
+    if task and task.user_id == current_user.id:
+        task.done = not task.done  # Toggle done status
+        db.session.commit()
+        flash("Task status updated.")
     return redirect(url_for('index'))
 
 

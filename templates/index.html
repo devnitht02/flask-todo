@@ -3,55 +3,66 @@
 {% block title %}Home - Taskly{% endblock %}
 
 {% block content %}
-    <div class="container my-5 div1">
-        <div class="row">
-            <div class="col-md-6">
-                <h2 class="mb-4">Add New Task</h2>
-                {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-success">{{ message }}</div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-                <form method="POST" action="{{ url_for('index') }}">
-                    <div class="mb-3">
-                        <label for="dateInput" class="form-label">Date:</label>
-                        <input type="date" class="form-control" id="dateInput" name="date" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="timeInput" class="form-label">Time:</label>
-                        <input type="time" class="form-control" id="timeInput" name="time" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="todoInput" class="form-label">ToDo:</label>
-                        <textarea class="form-control" id="todoInput" name="title" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Task</button>
-                    <br>
-                    <br>
-                </form>
-            </div>
-
-            <hr>
-
-            <div class="col-md-6">
-                <h2 class="text-white mb-4">Your To-Do List</h2>
-                <ul class="list-group">
-                    {% for task in all_tasks %}
-                        <li class="list-group-item">
-                            <strong>{{ task.date }}</strong> <b>{{ task.time }}</b> <b>{{ task.title }}</b>
-                            <form method="POST" action="{{ url_for('delete', task_id=task.id) }}"
-                                  style="display:inline;">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-
-                            <a href="{{ url_for('update', task_id=task.id) }}" class="btn btn-warning btn-sm">Update</a>
-                        </li>
+<div class="container my-5 div1">
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="mb-4">Add New Task</h2>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
                     {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('index') }}">
+                <div class="mb-3">
+                    <label for="dateInput" class="form-label">Date:</label>
+                    <input type="date" class="form-control" id="dateInput" name="date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="timeInput" class="form-label">Time:</label>
+                    <input type="time" class="form-control" id="timeInput" name="time" required>
+                </div>
+                <div class="mb-3">
+                    <label for="todoInput" class="form-label">ToDo:</label>
+                    <textarea class="form-control" id="todoInput" name="title" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Task</button>
+                <br><br>
+            </form>
+        </div>
 
-                </ul>
-            </div>
+        <div class="col-md-6">
+            <h2>Incomplete Tasks</h2>
+            <ul class="list-group">
+                {% for task in incomplete_tasks %}
+                    <li class="list-group-item">
+                        <form method="POST" action="{{ url_for('mark_done', task_id=task.id) }}" style="display:inline;">
+                            <input type="checkbox" name="done" {% if task.done %} checked {% endif %} onchange="this.form.submit()">
+                        </form>
+                        <strong>{{ task.date }}</strong> <b>{{ task.time }}</b> <b>{{ task.title }}</b>
+                        <a href="{{ url_for('update', task_id=task.id) }}" class="btn btn-warning btn-sm">Update</a>
+                        <form method="POST" action="{{ url_for('delete', task_id=task.id) }}" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-12 mt-5">
+            <h2>Completed Tasks</h2>
+            <ul class="list-group">
+                {% for task in completed_tasks %}
+                    <li class="list-group-item">
+                        <strong>{{ task.date }}</strong> <b>{{ task.time }}</b> <b>{{ task.title }}</b>
+                        <form method="POST" action="{{ url_for('mark_done', task_id=task.id) }}" style="display:inline;">
+                            <input type="checkbox" name="done" checked onchange="this.form.submit()">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
+</div>
 {% endblock %}

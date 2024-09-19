@@ -1,37 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Update Task - Taskly{% endblock %}
-
 {% block content %}
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h2 class="mb-4">Update Task</h2>
-
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <form method="POST" action="{{ url_for('update', task_id=task.id) }}">
-                <div class="mb-3" style="width: 35rem">
-                    <label for="dateInput" class="form-label">Date:</label>
-                    <input type="date" class="form-control" id="dateInput" name="date" value="{{ task.date }}" required>
-                </div>
-                <div class="mb-3" style="width: 35rem">
-                    <label for="timeInput" class="form-label">Time:</label>
-                    <input type="time" class="form-control" id="timeInput" name="time" value="{{ task.time }}" required>
-                </div>
-                <div class="mb-3" style="width: 35rem">
-                    <label for="todoInput" class="form-label">ToDo:</label>
-                    <textarea class="form-control" id="todoInput" name="title" rows="3" required>{{ task.title }}</textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Update Task</button>
-            </form>
-        </div>
+    <div class="container my-5">
+        <h2>Update Task</h2>
+        <form method="POST" action="{{ url_for('update', task_id=task.id) }}">
+            <div class="mb-3">
+                <label for="dateInput" class="form-label">Date:</label>
+                <input type="date" class="form-control" id="dateInput" name="date" value="{{ task.date }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="timeInput" class="form-label">Time:</label>
+                <input type="time" class="form-control" id="timeInput" name="time" value="{{ task.time }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="todoInput" class="form-label">ToDo:</label>
+                <textarea class="form-control" id="todoInput" name="title" rows="3" required>{{ task.title }}</textarea>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="doneCheck" name="done" {% if task.done %}
+                       checked {% endif %}>
+                <label class="form-check-label" for="doneCheck">Done</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Task</button>
+        </form>
     </div>
-</div>
 {% endblock %}
